@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .input-section {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 250px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .rules {
+            margin-top: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            max-width: 400px;
+        }
+
+        .rule {
+            margin: 5px 0;
+            display: none;
+        }
+
+        .rule.satisfied {
+            color: green;
+            font-weight: bold;
+        }
+
+        .tick {
+            color: green;
+            margin-left: 10px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #5d5d5d;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Password Game</h1>
+    <div class="input-section">
+        <input type="text" id="password" placeholder="Enter your password" oninput="validatePassword()">
+        <button class="submit-btn" onclick="submitPassword()">Submit</button>
+    </div>
+    <div class="rules">
+        <h3>Password Rules:</h3>
+        <ul>
+            <li class="rule" id="rule1">Must be at least 10 characters long</li>
+            <li class="rule" id="rule2">Must contain at least one uppercase letter</li>
+            <li class="rule" id="rule3">Must contain at least one lowercase letter</li>
+            <li class="rule" id="rule4">Must contain at least one number</li>
+            <li class="rule" id="rule5">Must contain at least one special character (!@#$%^&*)</li>
+            <li class="rule" id="rule7">Cannot contain spaces</li>
+            <li class="rule" id="rule8">Can contain vowels (a, e, i, o, u)</li>
+            <li class="rule" id="rule9">Must include the word "admin"</li>
+            <li class="rule" id="rule10">Must end with a punctuation mark (e.g., ., !, ?)</li>
+        </ul>
+    </div>
+    <div id="result" class="result"></div>
+
+    <script>
+        let currentRuleIndex = 0;
+        const passwordInput = document.getElementById('password');
+        const result = document.getElementById('result');
+        const rules = [
+            { test: password => password.length >= 10, element: document.getElementById('rule1') },
+            { test: password => /[A-Z]/.test(password), element: document.getElementById('rule2') },
+            { test: password => /[a-z]/.test(password), element: document.getElementById('rule3') },
+            { test: password => /[0-9]/.test(password), element: document.getElementById('rule4') },
+            { test: password => /[!@#$%^&*]/.test(password), element: document.getElementById('rule5') },
+            { test: password => !/\s/.test(password), element: document.getElementById('rule7') },
+            { test: password => /[aeiouAEIOU]/.test(password), element: document.getElementById('rule8') }, // Can contain vowels
+            { test: password => /admin/i.test(password), element: document.getElementById('rule9') },
+            { test: password => /[.!?]$/.test(password), element: document.getElementById('rule10') }
+        ];
+
+        function validatePassword() {
+            const password = passwordInput.value;
+
+            // Only check the current rule and previous rules
+            for (let i = 0; i <= currentRuleIndex; i++) {
+                const rule = rules[i];
+                if (rule.test(password)) {
+                    // Mark rule as satisfied and add tick
+                    rule.element.style.display = 'list-item';
+                    if (!rule.element.classList.contains('satisfied')) {
+                        rule.element.classList.add('satisfied');
+                        rule.element.innerHTML += ' <span class="tick">✔</span>';
+                    }
+                } else {
+                    rule.element.style.display = 'list-item';
+                    rule.element.classList.remove('satisfied');
+                    rule.element.innerHTML = rule.element.innerHTML.replace(' <span class="tick">✔</span>', '');
+                }
+            }
+
+            // Move to the next rule when the current rule is satisfied
+            if (currentRuleIndex < rules.length && rules[currentRuleIndex].test(password)) {
+                currentRuleIndex++;
+            }
+
+            // Show result based on progress
+            if (currentRuleIndex === rules.length) {
+                result.style.color = 'green';
+                result.textContent = "Password is valid!";
+            } else {
+                result.style.color = 'red';
+                result.textContent = "Password is invalid. Follow the rules.";
+            }
+        }
+
+        function submitPassword() {
+            const password = passwordInput.value;
+            let isValid = true;
+
+            // Check if all rules are satisfied
+            for (const rule of rules) {
+                if (!rule.test(password)) {
+                    isValid = false;
+                    break;
+                }
+            }
+
+            if (isValid) {
+                result.style.color = 'green';
+                result.textContent = "Password successfully submitted!";
+            } else {
+                result.style.color = 'red';
+                result.textContent = "Password is not valid.";
+            }
+        }
+    </script>
+</body>
+</html>
