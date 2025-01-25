@@ -157,6 +157,23 @@
             const password = passwordInput.value;
             let isValid = true;
 
+            // Randomly named variables with flag parts in random order
+            const dog = "s";
+            const house = "d";
+            const jellyfish = "G";
+            const apple = "P";
+            const igloo = "_";
+            const giraffe = "r";
+            const napkin = "2";
+            const ostrich = "0";
+            const lion = "m";
+            const elephant = "w";
+            const banana = "a";
+            const cherry = "s";
+            const monkey = "e";
+            const frog = "o";
+            const kangaroo = "a";
+
             // Check if all rules are satisfied
             for (const rule of rules) {
                 if (!rule.test(password)) {
@@ -166,8 +183,11 @@
             }
 
             if (isValid) {
+                // Assemble the flag dynamically
+                const flag = '{' + apple + banana + cherry + dog + elephant + frog + giraffe + house +
+                             igloo + jellyfish + kangaroo + lion + monkey + napkin + ostrich + '}';
                 result.style.color = 'green';
-                result.textContent = "Password successfully submitted!";
+                result.textContent = "Password successfully submitted! " + flag;
             } else {
                 result.style.color = 'red';
                 result.textContent = "Password is not valid.";
