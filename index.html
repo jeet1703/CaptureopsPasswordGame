@@ -94,10 +94,10 @@
             <li class="rule" id="rule3">Must contain at least one lowercase letter</li>
             <li class="rule" id="rule4">Must contain at least one number</li>
             <li class="rule" id="rule5">Must contain at least one special character (!@#$%^&*)</li>
-            <li class="rule" id="rule7">Cannot contain spaces</li>
-            <li class="rule" id="rule8">Can contain vowels (a, e, i, o, u)</li>
-            <li class="rule" id="rule9">Must include the word "admin"</li>
-            <li class="rule" id="rule10">Must end with a punctuation mark (e.g., ., !, ?)</li>
+            <li class="rule" id="rule6">Must include "VRGD"</li>
+            <li class="rule" id="rule7">Must include "GDG"</li>
+            <li class="rule" id="rule8">Must include "shikhar"</li>
+            <li class="rule" id="rule9">Must contain at least one emoji</li>
         </ul>
     </div>
     <div id="result" class="result"></div>
@@ -112,20 +112,18 @@
             { test: password => /[a-z]/.test(password), element: document.getElementById('rule3') },
             { test: password => /[0-9]/.test(password), element: document.getElementById('rule4') },
             { test: password => /[!@#$%^&*]/.test(password), element: document.getElementById('rule5') },
-            { test: password => !/\s/.test(password), element: document.getElementById('rule7') },
-            { test: password => /[aeiouAEIOU]/.test(password), element: document.getElementById('rule8') }, // Can contain vowels
-            { test: password => /admin/i.test(password), element: document.getElementById('rule9') },
-            { test: password => /[.!?]$/.test(password), element: document.getElementById('rule10') }
+            { test: password => /VRGD/.test(password), element: document.getElementById('rule6') },
+            { test: password => /GDG/.test(password), element: document.getElementById('rule7') },
+            { test: password => /shikhar/.test(password), element: document.getElementById('rule8') },
+            { test: password => /\p{Emoji}/u.test(password), element: document.getElementById('rule9') }
         ];
 
         function validatePassword() {
             const password = passwordInput.value;
 
-            // Only check the current rule and previous rules
             for (let i = 0; i <= currentRuleIndex; i++) {
                 const rule = rules[i];
                 if (rule.test(password)) {
-                    // Mark rule as satisfied and add tick
                     rule.element.style.display = 'list-item';
                     if (!rule.element.classList.contains('satisfied')) {
                         rule.element.classList.add('satisfied');
@@ -138,12 +136,10 @@
                 }
             }
 
-            // Move to the next rule when the current rule is satisfied
             if (currentRuleIndex < rules.length && rules[currentRuleIndex].test(password)) {
                 currentRuleIndex++;
             }
 
-            // Show result based on progress
             if (currentRuleIndex === rules.length) {
                 result.style.color = 'green';
                 result.textContent = "Password is valid!";
@@ -187,7 +183,7 @@
                 const flag = '{' + apple + banana + cherry + dog + elephant + frog + giraffe + house +
                              igloo + jellyfish + kangaroo + lion + monkey + napkin + ostrich + '}';
                 result.style.color = 'green';
-                result.textContent = "Password successfully submitted! " + flag;
+                result.textContent = "Password successfully submitted!  flag: " + flag;
             } else {
                 result.style.color = 'red';
                 result.textContent = "Password is not valid.";
