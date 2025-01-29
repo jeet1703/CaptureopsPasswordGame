@@ -96,7 +96,7 @@
             <li class="rule" id="rule5">Must contain at least one special character (!@#$%^&*)</li>
             <li class="rule" id="rule6">Must include "VRGD"</li>
             <li class="rule" id="rule7">Must include "GDG"</li>
-            <li class="rule" id="rule8">Must include "shikhar"</li>
+            <li class="rule" id="rule8">Must include our Sponsor(ALL_CAPS)</li>
             <li class="rule" id="rule9">Must contain at least one emoji</li>
         </ul>
     </div>
@@ -114,7 +114,7 @@
             { test: password => /[!@#$%^&*]/.test(password), element: document.getElementById('rule5') },
             { test: password => /VRGD/.test(password), element: document.getElementById('rule6') },
             { test: password => /GDG/.test(password), element: document.getElementById('rule7') },
-            { test: password => /shikhar/.test(password), element: document.getElementById('rule8') },
+            { test: password => /TECH_SHIKHAR/.test(password), element: document.getElementById('rule8') },
             { test: password => /\p{Emoji}/u.test(password), element: document.getElementById('rule9') }
         ];
 
